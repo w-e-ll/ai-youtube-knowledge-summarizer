@@ -1,0 +1,75 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Logs
+logs/
+*.log
+
+# Build / packaging artifacts
+*.egg-info/
+build/
+dist/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Pytest
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+*.egg-info/
+# OS
+.DS_Store
+Thumbs.db
+
+# uv
+uv.lock
+
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+
+.venv/
+venv/
+
+# Environment variables
+
+.env
+
+# Logs
+
+*.log
+var/log/*
+
+# Runtime storage
+
+ai_youtube_knowledge_summarizer/storage/videos/*
+ai_youtube_knowledge_summarizer/storage/transcripts/*
+ai_youtube_knowledge_summarizer/storage/vector_store/*
+
+# Keep directory structure
+
+!ai_youtube_knowledge_summarizer/storage/videos/.gitkeep
+!ai_youtube_knowledge_summarizer/storage/transcripts/.gitkeep
+!ai_youtube_knowledge_summarizer/storage/vector_store/.gitkeep
+
+# IDE
+
+.idea/
+.vscode/
+
+# OS
+
+.DS_Store
+Thumbs.db

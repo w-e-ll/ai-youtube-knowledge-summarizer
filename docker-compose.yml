@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ai_youtube_knowledge_summarizer_api
+
+    command: >
+      uvicorn ai_youtube_knowledge_summarizer.main:app
+      --host 0.0.0.0
+      --port 8000
+
+    env_file:
+      - .env
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./:/app
+      - ./storage/videos:/app/storage/videos
+      - ./storage/transcripts:/app/storage/transcripts
+      - ./storage/vector_store:/app/storage/vector_store
+      - ./logs:/app/logs
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+    networks:
+      - ai_network
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ai_youtube_knowledge_summarizer_streamlit
+
+    command: >
+      streamlit run
+      ai_youtube_knowledge_summarizer/ui/streamlit_app.py
+      --server.address=0.0.0.0
+      --server.port=8501
+
+    env_file:
+      - .env
+
+    environment:
+      API_BASE_URL: http://api:8000/api/v1
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      api:
+        condition: service_healthy
+
+    volumes:
+      - ./:/app
+      - ./storage/videos:/app/storage/videos
+      - ./storage/transcripts:/app/storage/transcripts
+      - ./storage/vector_store:/app/storage/vector_store
+      - ./logs:/app/logs
+
+    restart: unless-stopped
+
+    networks:
+      - ai_network
+
+networks:
+  ai_network:
+    driver: bridge
